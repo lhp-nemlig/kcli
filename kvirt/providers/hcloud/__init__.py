@@ -110,7 +110,10 @@ class Khcloud():
 
             placement_group = response.placement_group
 
-        if flavor is not None or "flavor_options" not in overrides:
+        if flavor is None and "flavor_options" not in overrides:
+            error("No server flavor defined, set either 'flavor' or 'flavor_options' to enable vm creation")
+            return {'result': 'failure', 'reason': 'No server flavor defined'}
+        elif flavor is not None or "flavor_options" not in overrides:
             flavor_options = [flavor]
         else:
             flavor_options = overrides.get("flavor_options")
